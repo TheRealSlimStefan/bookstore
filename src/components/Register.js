@@ -76,7 +76,8 @@ const Register = ({users, addUsers, setActualUser}) => {
     const handleClick = (e) => {
       e.preventDefault();
 
-      if(formValidation()){
+      // do ifa włożyć -> formValidation()
+      if(true){
         addUsers(JSON.stringify({email, password,}));
         logInUser({email, password,});
         routeChange(e);

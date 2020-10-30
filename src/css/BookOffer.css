@@ -1,0 +1,48 @@
+.main .results .result {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    padding: 20px 5px;
+    background-color: rgb(250, 250, 250);
+    margin: 5px 5px 10px;
+}
+
+.main .results .result .description {
+    padding: 10px 5px;
+    text-align: center;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.main .results .result h1 {
+    width: 100%;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.main .results .result h2 {
+    width: 100%;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.main .results .result p {
+    width: 100%;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.main .results .result button {
+    width: 55%;
+    font-size: 15px;
+    border-radius: 15px;
+    border: 2px solid rgb(58, 186, 141);
+    padding: 5px;
+    background-color:rgb(58, 186, 141);
+    padding: 10px;
+    text-align: center;
+    color: white;
+    outline: none;
+}
