@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Logging from './Logging'
 import Register from './Register'
 import Main from './Main'
+import Cart from './Cart'
 
 import '../css/App.css';
 
@@ -57,7 +58,8 @@ class App extends Component {
       <Router>
           <Route path="/" exact component={() => <Logging users={users} setActualUser={this.setActualUser}/>}/>
           <Route path="/register" component={() => <Register addUsers={this.addUsers} users={users} setActualUser={this.setActualUser}/>}/>   
-          <Route path="/main" exact component={() => <Main actualUser={actualUser}/>}/>   
+          <Route path="/main" exact component={() => <Main actualUser={actualUser}/>}/>
+          <Route path="/cart" exact component={() => <Cart actualUser={actualUser}/>}/>    
       </Router>
     )
   }

@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom';
 import '../css/Logging.css';
 
 const Logging = ({users, setActualUser}) => {
-
     const history = useHistory();
+    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isIncorrect, setIsIncorrect] = useState(false);

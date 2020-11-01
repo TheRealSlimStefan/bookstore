@@ -1,6 +1,17 @@
-// API key=AIzaSyDjD_8SrWamB5rRUl-umwzlnNUCR1xXf1o
+// API key=AIzaSyDbIZFOmCQoO9zPArSJ44Wt0-sCI6-Sf3U
 
-import React, { Component } from 'react';
+// fetch(`https://books.googleapis.com/books/v1/volumes?q=${generateCode()}&download=DOWNLOAD_UNDEFINED&filter=paid-ebooks&maxResults=40&orderBy=newest&printType=BOOKS&projection=FULL&key=AIzaSyDjD_8SrWamB5rRUl-umwzlnNUCR1xXf1o key=AIzaSyAM5-ENsl2Zj2BOpSGW3-LR7ZI88tfdQ2g`)
+
+// const fetchData = async () => {
+    //     if(isMounted && books.length === 0) await fetch(`https://books.googleapis.com/books/v1/volumes?q=${generateCode()}&download=DOWNLOAD_UNDEFINED&filter=paid-ebooks&maxResults=40&orderBy=newest&printType=BOOKS&projection=FULL`).then((response) => response.json()).then((data) => {
+    //         if(Array.isArray(data.items)){
+    //             setIsLoaded(true);
+    //             setBooks(data.items);
+    //         } else throw data;
+    //     }).catch(error => console.log(error.error.code, error.error.message));
+    // }
+
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import BookOffer from './BookOffer'
@@ -10,13 +21,37 @@ import '../css/Main.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons'
 
-class Main extends Component {
-    state = {
-        books: [],
-        isLoaded: false,
-    }
+const Main = () => {
+    const history = useHistory();
 
-    generateCode = () => {
+    const [books, setBooks] = useState([]); 
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+        
+        async function fetchData() {
+            if(isMounted && books.length === 0){
+            
+            const response = await fetch(`https://books.googleapis.com/books/v1/volumes?q=${generateCode()}&download=DOWNLOAD_UNDEFINED&filter=paid-ebooks&maxResults=40&orderBy=newest&printType=BOOKS&projection=FULL`);
+
+            const data = await response.json();
+
+            if(Array.isArray(data.items)){
+                setBooks(data.items)
+                setIsLoaded(true);
+                }
+            }
+        }
+
+        fetchData();
+
+        return () => setIsMounted(false)
+    }, [isMounted, setIsMounted, books]);
+
+
+    const generateCode = () => {
         let amountOfChars = Math.floor(Math.random() * (4 - 1)) + 1;
         let string = '';
 
@@ -27,52 +62,46 @@ class Main extends Component {
         return string;
     }
 
-    componentDidMount(){
-        this.mounted = true;
-
-        fetch(`https://books.googleapis.com/books/v1/volumes?q=${this.generateCode()}&download=DOWNLOAD_UNDEFINED&filter=paid-ebooks&maxResults=40&orderBy=newest&printType=BOOKS&projection=FULL&key=AIzaSyDjD_8SrWamB5rRUl-umwzlnNUCR1xXf1o`).then(response => response.json()).then(data => {
-            if(this.mounted) this.setState({
-                    books: data.items,
-                    isLoaded: true,
-                });
-        });
+    const routeChange = (where) => {
+        history.push(where);
+      }
+  
+    const handleClick = (where) => {
+        routeChange(where);
     }
 
-    componentWillUnmount(){
-        this.mounted = false;
+    const addToCart = (book) => {
+        console.log(book);
     }
 
     //dodać przekierowanie jeśli ktoś ręcznie wpisze link
-    render(){
-        const { books, isLoaded } = this.state;
 
-        //console.log(books, isLoaded);
+    //console.log(books, isLoaded);
 
-        const booksOffers = books.map(book => <BookOffer key={book.id + Math.floor(Math.random() * 100 + 1)} book={book}/>);
+    const booksOffers = books.map(book => <BookOffer key={book.id + Math.floor(Math.random() * 100)} book={book} addToCart={addToCart}/>)
 
-        return (
-            <div className="main">
-                <nav>
-                    <div className="logo">
-                        <span>Bookstore App</span>
-                    </div>
-                    <div className="buttons">
-                        <button><FontAwesomeIcon icon={faShoppingCart} /></button>
-                        <button><FontAwesomeIcon icon={faUser} /></button>
-                    </div>
-                    <div className="search">
-                        <input type="text"/>
-                        <button><FontAwesomeIcon icon={faSearch} /></button>
-                    </div>
-                </nav>
-                {isLoaded ? (<div className="results">
-                    <>
-                        {booksOffers}
-                    </>
-                </div>) : null} 
-            </div>
-        )
-    }
+    return (
+        <div className="main">
+            <nav>
+                <div className="logo">
+                    <span>Bookstore App</span>
+                </div>
+                <div className="buttons">
+                    <button onClick={() => handleClick('cart')} data-path="cart"><FontAwesomeIcon icon={faShoppingCart} /></button>
+                    <button onClick={() => handleClick('userPanel')}><FontAwesomeIcon data-path="cart" icon={faUser} /></button>
+                </div>
+                <div className="search">
+                    <input type="text"/>
+                    <button><FontAwesomeIcon icon={faSearch} /></button>
+                </div>
+            </nav>
+            {isLoaded ? (<div className="results">
+                <>
+                    {booksOffers}
+                </>
+            </div>) : null} 
+        </div>
+    )
 }
 
 export default Main;
