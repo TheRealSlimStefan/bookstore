@@ -78,8 +78,8 @@ const Register = ({users, addUsers, setActualUser}) => {
 
       // do ifa włożyć -> formValidation()
       if(true){
-        addUsers(JSON.stringify({email, password,}));
-        logInUser({email, password,});
+        addUsers(JSON.stringify({email, password, cart: [], cash: 0,}));
+        logInUser({email, password, cart: [], cash: 0,});
         routeChange(e);
       }
     }

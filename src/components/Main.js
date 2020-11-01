@@ -21,7 +21,7 @@ import '../css/Main.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons'
 
-const Main = () => {
+const Main = ({actualUser}) => {
     const history = useHistory();
 
     const [books, setBooks] = useState([]); 
@@ -71,14 +71,23 @@ const Main = () => {
     }
 
     const addToCart = (book) => {
-        console.log(book);
+
+        for(let i = 0; i < localStorage.length; i++){
+            let user = JSON.parse(localStorage.getItem(`user${i}`));
+
+            if(user.email === actualUser.email && user.password === actualUser.password) {
+                user.cart.push(book);
+                let content = JSON.stringify({email: user.email, password: user.password, cart: user.cart, cash: user.cash});
+                localStorage.setItem(`user${i}`, content);
+            }
+        }
     }
 
     //dodać przekierowanie jeśli ktoś ręcznie wpisze link
 
     //console.log(books, isLoaded);
 
-    const booksOffers = books.map(book => <BookOffer key={book.id + Math.floor(Math.random() * 100)} book={book} addToCart={addToCart}/>)
+    const booksOffers = books.map(book => <BookOffer key={book.id + Math.floor(Math.random() * 1000 + Math.floor(Math.random() * 100))} book={book} addToCart={addToCart}/>)
 
     return (
         <div className="main">
