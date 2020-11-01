@@ -1,0 +1,28 @@
+.cart {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    padding: 20px 5px;
+    background-color: rgb(250, 250, 250);
+    margin: 5px 5px 10px;
+}
+
+.cart.cartItem h1 {
+    width: 100%;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.cart.cartItem h2 {
+    width: 100%;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.cart.cartItem .result p {
+    width: 100%;
+    font-size: 15px;
+    padding: 5px;
+}
