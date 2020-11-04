@@ -21,7 +21,7 @@ import '../css/Main.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons'
 
-const Main = ({actualUser}) => {
+const Main = ({actualUser, setActualUser}) => {
     const history = useHistory();
 
     const [books, setBooks] = useState([]); 
@@ -64,23 +64,26 @@ const Main = ({actualUser}) => {
 
     const routeChange = (where) => {
         history.push(where);
-      }
+    }
   
     const handleClick = (where) => {
         routeChange(where);
     }
 
     const addToCart = (book) => {
-
         for(let i = 0; i < localStorage.length; i++){
             let user = JSON.parse(localStorage.getItem(`user${i}`));
+
+            console.log(user);
 
             if(user.email === actualUser.email && user.password === actualUser.password) {
                 user.cart.push(book);
                 let content = JSON.stringify({email: user.email, password: user.password, cart: user.cart, cash: user.cash});
                 localStorage.setItem(`user${i}`, content);
+                setActualUser(JSON.parse(content));
             }
         }
+        handleClick('cart');   
     }
 
     //dodać przekierowanie jeśli ktoś ręcznie wpisze link
@@ -96,8 +99,8 @@ const Main = ({actualUser}) => {
                     <span>Bookstore App</span>
                 </div>
                 <div className="buttons">
-                    <button onClick={() => handleClick('cart')} data-path="cart"><FontAwesomeIcon icon={faShoppingCart} /></button>
-                    <button onClick={() => handleClick('userPanel')}><FontAwesomeIcon data-path="cart" icon={faUser} /></button>
+                    <button onClick={() => handleClick('cart')} ><FontAwesomeIcon icon={faShoppingCart} /></button>
+                    <button onClick={() => handleClick('userPanel')}><FontAwesomeIcon icon={faUser} /></button>
                 </div>
                 <div className="search">
                     <input type="text"/>
