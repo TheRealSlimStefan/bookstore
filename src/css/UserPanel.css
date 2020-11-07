@@ -1,0 +1,112 @@
+.userPanel {
+    display: flex;
+    align-items: space-between;
+    flex-wrap: wrap;
+    padding: 10px;
+    flex-grow: 1;
+    min-height: 100vh;
+}
+
+.userPanel h1 {
+    width: 100%;
+    padding: 5px;
+    text-align: center;
+}
+
+.userPanel .user {
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.userPanel .user p {
+    padding: 5px;
+    text-align: center;
+}
+
+.userPanel .user p span {
+    color: rgb(58, 186, 141);
+    font-weight: 900;
+}
+
+.userPanel .user {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+}
+
+.userPanel .user p {
+    width: 100%;
+}
+
+.userPanel .user .addCash label {
+    width: 100%;
+    padding: 20px 5px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.userPanel .user .addCash input {
+    width: 80%;
+    padding: 5px;
+    margin: 10px 0 0;
+    border: 1px solid grey;
+    text-align: center;
+    outline: none;
+    border-radius: 5px;
+}
+
+.userPanel .user .addCash p.error {
+    color: red;
+}
+
+.userPanel .user .addCash p.info {
+    color: grey;
+}
+
+.userPanel .user .addCash button {
+    width: 95%;
+    font-size: 18px;
+    margin: 10px 0px;
+    min-width: 50px;
+    min-height: 50px;
+    border-radius: 15px;
+    border: 2px solid rgb(58, 186, 141);
+    padding: 5px;
+    background-color:white;
+    padding: 10px;
+    text-align: center;
+    color: rgb(58, 186, 141);
+    outline: none;
+}
+
+.userPanel .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+    align-self: flex-end;
+    width: 100%;
+    padding: 10px;
+}
+
+.userPanel .buttons button {
+    width: 45%;
+    font-size: 18px;
+    border-radius: 15px;
+    border: 2px solid rgb(58, 186, 141);
+    padding: 5px;
+    background-color:white;
+    padding: 10px;
+    text-align: center;
+    color: rgb(58, 186, 141);
+    outline: none;
+}
+
+.userPanel .buttons button.delete {
+    width: 95%;
+    color: red;
+    margin: 10px 0;
+}

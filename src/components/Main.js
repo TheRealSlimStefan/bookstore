@@ -78,7 +78,7 @@ const Main = ({actualUser, setActualUser}) => {
 
             if(user.email === actualUser.email && user.password === actualUser.password) {
                 user.cart.push(book);
-                let content = JSON.stringify({email: user.email, password: user.password, cart: user.cart, cash: user.cash});
+                let content = JSON.stringify({email: user.email, password: user.password, cart: user.cart, books: [...user.books], cash: user.cash});
                 localStorage.setItem(`user${i}`, content);
                 setActualUser(JSON.parse(content));
             }
