@@ -4,7 +4,28 @@ import '../css/CartItem.css'
 
 import noImg from '../img/noImg.png'
 
-const CartItem = ({book, actualUser}) => {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
+
+const CartItem = ({book, actualUser, setActualUser}) => {
+
+    const handleDelete = () => {
+        for(let i = 0; i < localStorage.length; i++){
+            let user = JSON.parse(localStorage.getItem(`user${i}`));
+
+            if(user.email === actualUser.email && user.password === actualUser.password) {
+
+                const newCart = user.cart.filter(item => {
+                    if(item.id !== book.id) return true;
+                    else return false;
+                });
+
+                localStorage.setItem(`user${i}`, JSON.stringify({email: user.email, password: user.password, books: user.books, cart: newCart, cash: user.cash,}));
+                setActualUser({email: user.email, password: user.password, books: user.books, cart: newCart, cash: user.cash,
+                });
+            }
+        }
+    }
 
     return ( 
         <div className="cartItem">
@@ -15,9 +36,7 @@ const CartItem = ({book, actualUser}) => {
                 <p>Cena: {book.saleInfo.saleability === "FOR_SALE" &&  book.saleInfo.listPrice.amount !== 0 ? book.saleInfo.listPrice.amount + " zł": "darmowa"}</p>
             </div>
             <div className="panel">
-                <button>-</button>
-                <p>0</p>
-                <button>+</button>
+                <button onClick={handleDelete}><FontAwesomeIcon icon={faTrash} /></button>
             </div>
         </div> 
      );

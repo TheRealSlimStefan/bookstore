@@ -44,10 +44,8 @@ const Cart = ({actualUser, setActualUser}) => {
         } else setInfo(true);
     }
 
-    console.log(actualUser);
-
     const cartContent = actualUser.cart.map(book => {
-        return <CartItem actualUser={actualUser} book={book} key={book.id + Math.floor(Math.random()* 100)}/>   
+        return <CartItem setActualUser={setActualUser} actualUser={actualUser} book={book} key={book.id + Math.floor(Math.random()* 100)}/>   
     });
 
     return ( 

@@ -34,7 +34,9 @@ const Main = ({actualUser, setActualUser}) => {
         async function fetchData() {
             if(isMounted && books.length === 0){
             
-            const response = await fetch(`https://books.googleapis.com/books/v1/volumes?q=${generateCode()}&download=DOWNLOAD_UNDEFINED&filter=paid-ebooks&maxResults=40&orderBy=newest&printType=BOOKS&projection=FULL`);
+               // ${generateCode()}
+
+            const response = await fetch(`https://books.googleapis.com/books/v1/volumes?q=dddddddddddddddddddddddddddddddddddd&download=DOWNLOAD_UNDEFINED&filter=paid-ebooks&maxResults=40&orderBy=newest&printType=BOOKS&projection=FULL`);
 
             const data = await response.json();
 
@@ -74,11 +76,19 @@ const Main = ({actualUser, setActualUser}) => {
         for(let i = 0; i < localStorage.length; i++){
             let user = JSON.parse(localStorage.getItem(`user${i}`));
 
-            console.log(user);
-
             if(user.email === actualUser.email && user.password === actualUser.password) {
                 user.cart.push(book);
-                let content = JSON.stringify({email: user.email, password: user.password, cart: user.cart, books: [...user.books], cash: user.cash});
+
+                console.log(user.cart);
+
+                const newCart = user.cart.filter(item => {
+                    if(item.id !== book.id) return true;
+                    else return false;
+                });
+
+                console.log("newCart", newCart);
+
+                let content = JSON.stringify({email: user.email, password: user.password, cart: user.cart, books: [...newCart], cash: user.cash});
                 localStorage.setItem(`user${i}`, content);
                 setActualUser(JSON.parse(content));
             }
