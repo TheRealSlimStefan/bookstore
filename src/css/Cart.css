@@ -30,3 +30,20 @@
     color: rgb(58, 186, 141);
     outline: none;
 }
+
+.cart p.info {
+    width: 100%;
+    text-align: center;
+    color: red;
+}
+
+.cart p.cash {
+    padding: 5px;
+    width: 100%;
+    text-align: center;
+}
+
+.cart p.cash span {
+    color: rgb(58, 186, 141);
+    font-weight: 900;
+}

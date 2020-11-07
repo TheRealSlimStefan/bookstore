@@ -279,7 +279,7 @@ class App extends Component {
           <Route path="/" exact component={() => <Logging users={users} setActualUser={this.setActualUser}/>}/>
           <Route path="/register" component={() => <Register addUsers={this.addUsers} users={users} setActualUser={this.setActualUser}/>}/>   
           <Route path="/main" exact component={() => <Main actualUser={actualUser} setActualUser={this.setActualUser}/>}/>
-          <Route path="/cart" exact component={() => <Cart actualUser={actualUser}/>}/>
+          <Route path="/cart" exact component={() => <Cart actualUser={actualUser} setActualUser={this.setActualUser}/>}/>
           <Route path="/userPanel" exact component={() => <UserPanel actualUser={actualUser} setActualUser={this.setActualUser}/>}/>
           <Route path="/books" exact component={() => <Books actualUser={actualUser}/>}/>      
       </Router>

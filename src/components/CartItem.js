@@ -4,7 +4,8 @@ import '../css/CartItem.css'
 
 import noImg from '../img/noImg.png'
 
-const CartItem = ({book}) => {
+const CartItem = ({book, actualUser}) => {
+
     return ( 
         <div className="cartItem">
             <img src={book.volumeInfo.hasOwnProperty('imageLinks') ? book.volumeInfo.imageLinks.thumbnail : noImg} alt={book.volumeInfo.description}/>

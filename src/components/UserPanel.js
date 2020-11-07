@@ -53,9 +53,6 @@ const UserPanel = ({actualUser, setActualUser}) => {
     }
 
     const deleteAccount = (where) => {
-
-        //prawdopodobnie bedzie bug
-        //logowanie nie działa z pustym
         for(let i = 0; i < localStorage.length; i++){
             let user = JSON.parse(localStorage.getItem(`user${i}`));
 
@@ -71,7 +68,7 @@ const UserPanel = ({actualUser, setActualUser}) => {
         <div className="userPanel">
             <div className="user">
                 <h1>User Panel:</h1>
-                <p>Your Cash: <span>{cash}$</span></p>
+                <p>Your Cash: <span>{cash.toFixed(2)}$</span></p>
                 <div className="addCash">
                     <label>
                         <p>Add Cash:</p>
