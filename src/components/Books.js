@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Route, Redirect } from 'react-router-dom';
 
 import BookItem from '../components/BookItem';
 
@@ -16,20 +16,20 @@ const Books = ({actualUser}) => {
         routeChange(where);
     }
 
-    console.log(actualUser);
-
     const books = actualUser.books.map(book => {
         return <BookItem book={book} key={book.id + Math.floor(Math.random()* 100)}/>   
     });
 
     return ( 
-        <div className="books">
-            <h1>Your Books:</h1>
-            {books}
-            <div className="booksPanel">
-                <button onClick={() => handleClick('userPanel')}>CANCEL</button>
+        <Route render={() => ((actualUser.email !== "" && actualUser.password !== "") ? (
+            <div className="books">
+                <h1>Your Books:</h1>
+                {books}
+                <div className="booksPanel">
+                    <button onClick={() => handleClick('userPanel')}>CANCEL</button>
+                </div>
             </div>
-        </div>
+        ) : (<Redirect to="/" />))}/>
      );
 }
  

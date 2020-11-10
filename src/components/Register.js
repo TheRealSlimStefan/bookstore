@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import '../css/Register.css';
 
-const Register = ({users, addUsers, setActualUser}) => {
+const Register = ({addUsers, setActualUser}) => {
     const history = useHistory();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -45,6 +45,12 @@ const Register = ({users, addUsers, setActualUser}) => {
 
       let isUserExistCondition = false;
 
+      const users = [];
+
+      for(let i = 0; i < localStorage.length; i++){
+          users.push(localStorage.getItem(`user${i}`));
+      }
+
       users.forEach(user => {if(JSON.parse(user).email === email){
         isUserExistCondition = true;
       }});
@@ -76,8 +82,7 @@ const Register = ({users, addUsers, setActualUser}) => {
     const handleClick = (e) => {
       e.preventDefault();
 
-      // do ifa włożyć -> formValidation()
-      if(true){
+      if(formValidation()){
         addUsers(JSON.stringify({email, password, books: [], cart: [], cash: 0,}));
         logInUser({email, password, books: [], cart: [], cash: 0,});
         routeChange(e);
@@ -85,7 +90,6 @@ const Register = ({users, addUsers, setActualUser}) => {
     }
 
     const logInUser = (actualUser) => {
-      console.log(`Zalogowano! ${actualUser.email}`);
       setActualUser(actualUser);
     };
 

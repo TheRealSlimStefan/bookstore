@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Route, Redirect } from 'react-router-dom';
 
 import CartItem from '../components/CartItem';
-
-
 
 import '../css/Cart.css'
 
@@ -26,6 +24,7 @@ const Cart = ({actualUser, setActualUser}) => {
         actualUser.cart.map(book => {
             if(book.saleInfo.saleability !== "NOT_FOR_SALE") suma += book.saleInfo.listPrice.amount;
             userBooks.push(book);
+            return true;
         });
 
         if(actualUser.cash >= suma){
@@ -49,16 +48,18 @@ const Cart = ({actualUser, setActualUser}) => {
     });
 
     return ( 
-        <div className="cart">
-            <h1>Shopping Cart:</h1>
-            <p className="cash">Your Cash: <span>{actualUser.cash.toFixed(2)}$</span></p>
-            {cartContent}
-            {info ? <p className="info">You have not enough money!</p> : null}
-            <div className="cartPanel">
-                <button onClick={() => handleClick('main')}>CANCEL</button>
-                <button onClick={handleBuy}>BUY</button>
+        <Route render={() => ((actualUser.email !== "" && actualUser.password !== "") ? (
+            <div className="cart">
+                <h1>Shopping Cart:</h1>
+                <p className="cash">Your Cash: <span>{actualUser.cash.toFixed(2)}$</span></p>
+                {cartContent}
+                {info ? <p className="info">You have not enough money!</p> : null}
+                <div className="cartPanel">
+                    <button onClick={() => handleClick('main')}>CANCEL</button>
+                    <button onClick={handleBuy}>BUY</button>
+                </div>
             </div>
-        </div>
+        ) : (<Redirect to="/" />))}/>
      );
 }
  

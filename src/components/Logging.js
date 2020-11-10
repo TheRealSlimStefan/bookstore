@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../css/Logging.css';
 
-const Logging = ({users, setActualUser}) => {
+const Logging = ({setActualUser}) => {
     const history = useHistory();
     
     const [email, setEmail] = useState("");
@@ -23,24 +23,33 @@ const Logging = ({users, setActualUser}) => {
     const formValidation = () => {
       let flag = false;
 
+      const users = [];
+
+      for(let i = 0; i < localStorage.length; i++){
+          users.push(localStorage.getItem(`user${i}`));
+      }
+
       users.forEach(user => {
         const actualUser = JSON.parse(user);
 
-        if(actualUser.email === email && actualUser.password === password){
+        if(email !== "" && password !== "" && actualUser.email === email && actualUser.password === password){
+          console.log(actualUser);
           console.log(`Zalogowano! ${actualUser.email}`);
           setActualUser(actualUser);
           flag = true;
-        } 
+        }
       });
 
       return flag;
     }
 
     const handleClick = (e) => {
+      console.log('click');
       e.preventDefault();
 
-      if(formValidation()) routeChange(e);
-      else {
+      if(formValidation()) {
+        routeChange(e);
+      } else {
         setIsIncorrect(true);
         setMessage("Invalid login or password!");
       }

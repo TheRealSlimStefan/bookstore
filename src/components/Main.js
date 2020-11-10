@@ -1,18 +1,5 @@
-// API key=AIzaSyDbIZFOmCQoO9zPArSJ44Wt0-sCI6-Sf3U
-
-// fetch(`https://books.googleapis.com/books/v1/volumes?q=${generateCode()}&download=DOWNLOAD_UNDEFINED&filter=paid-ebooks&maxResults=40&orderBy=newest&printType=BOOKS&projection=FULL&key=AIzaSyDjD_8SrWamB5rRUl-umwzlnNUCR1xXf1o key=AIzaSyAM5-ENsl2Zj2BOpSGW3-LR7ZI88tfdQ2g`)
-
-// const fetchData = async () => {
-    //     if(isMounted && books.length === 0) await fetch(`https://books.googleapis.com/books/v1/volumes?q=${generateCode()}&download=DOWNLOAD_UNDEFINED&filter=paid-ebooks&maxResults=40&orderBy=newest&printType=BOOKS&projection=FULL`).then((response) => response.json()).then((data) => {
-    //         if(Array.isArray(data.items)){
-    //             setIsLoaded(true);
-    //             setBooks(data.items);
-    //         } else throw data;
-    //     }).catch(error => console.log(error.error.code, error.error.message));
-    // }
-
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect, Route } from 'react-router-dom';
 
 import BookOffer from './BookOffer'
 
@@ -24,7 +11,8 @@ import { faSearch, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-ic
 const Main = ({actualUser, setActualUser}) => {
     const history = useHistory();
 
-    const [books, setBooks] = useState([]); 
+    const [books, setBooks] = useState([]);
+    const [input, setInput] = useState(""); 
     const [isLoaded, setIsLoaded] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
 
@@ -33,10 +21,8 @@ const Main = ({actualUser, setActualUser}) => {
         
         async function fetchData() {
             if(isMounted && books.length === 0){
-            
-               // ${generateCode()}
 
-            const response = await fetch(`https://books.googleapis.com/books/v1/volumes?q=dddddddddddddddddddddddddddddddddddd&download=DOWNLOAD_UNDEFINED&filter=paid-ebooks&maxResults=40&orderBy=newest&printType=BOOKS&projection=FULL`);
+            const response = await fetch(`https://books.googleapis.com/books/v1/volumes?q=${generateCode()}&download=DOWNLOAD_UNDEFINED&filter=paid-ebooks&maxResults=40&orderBy=newest&printType=BOOKS&projection=FULL`);
 
             const data = await response.json();
 
@@ -51,7 +37,6 @@ const Main = ({actualUser, setActualUser}) => {
 
         return () => setIsMounted(false)
     }, [isMounted, setIsMounted, books]);
-
 
     const generateCode = () => {
         let amountOfChars = Math.floor(Math.random() * (4 - 1)) + 1;
@@ -69,6 +54,17 @@ const Main = ({actualUser, setActualUser}) => {
     }
   
     const handleClick = (where) => {
+        if(where === "cart"){
+            for(let i = 0; i < localStorage.length; i++){
+                let user = JSON.parse(localStorage.getItem(`user${i}`));
+    
+                if(user.email === actualUser.email && user.password === actualUser.password) {
+                    let content = JSON.stringify({email: user.email, password: user.password, cart: user.cart, books: user.books, cash: user.cash});
+                    localStorage.setItem(`user${i}`, content);
+                    setActualUser(JSON.parse(content));
+                }
+            }
+        }
         routeChange(where);
     }
 
@@ -76,19 +72,20 @@ const Main = ({actualUser, setActualUser}) => {
         for(let i = 0; i < localStorage.length; i++){
             let user = JSON.parse(localStorage.getItem(`user${i}`));
 
+            let newCart = [];
+
             if(user.email === actualUser.email && user.password === actualUser.password) {
-                user.cart.push(book);
 
-                console.log(user.cart);
+                newCart = [...user.cart];
 
-                const newCart = user.cart.filter(item => {
-                    if(item.id !== book.id) return true;
-                    else return false;
+                newCart = user.cart.filter(item => {
+                     if(book.id === item.id) return false;
+                     else return true;
                 });
 
-                console.log("newCart", newCart);
+                newCart.push(book);
 
-                let content = JSON.stringify({email: user.email, password: user.password, cart: user.cart, books: [...newCart], cash: user.cash});
+                let content = JSON.stringify({email: user.email, password: user.password, cart: newCart, books: user.books, cash: user.cash});
                 localStorage.setItem(`user${i}`, content);
                 setActualUser(JSON.parse(content));
             }
@@ -96,33 +93,56 @@ const Main = ({actualUser, setActualUser}) => {
         handleClick('cart');   
     }
 
-    //dodać przekierowanie jeśli ktoś ręcznie wpisze link
+    const handleChange = (e) => {
+        setInput(e.target.value);
+    }
 
-    //console.log(books, isLoaded);
+    const handleSearch = () => {
+        if(input !== ""){
+            async function fetchData() {
 
-    const booksOffers = books.map(book => <BookOffer key={book.id + Math.floor(Math.random() * 1000 + Math.floor(Math.random() * 100))} book={book} addToCart={addToCart}/>)
+                const response = await fetch(`https://books.googleapis.com/books/v1/volumes?q=${input}&filter=paid-ebooks`);
+    
+                const data = await response.json();
+    
+                if(Array.isArray(data.items)){
+                    setBooks(data.items)
+                    setIsLoaded(true);
+                }
+            }
+    
+            fetchData();
+        }
+        setInput("");
+    }
+
+    let booksOffers;
+
+    booksOffers = books.map(book => <BookOffer key={book.id + Math.floor(Math.random() * 10000000 + Math.floor(Math.random() * 100))} book={book} addToCart={addToCart}/>)
 
     return (
-        <div className="main">
-            <nav>
-                <div className="logo">
-                    <span>Bookstore App</span>
-                </div>
-                <div className="buttons">
-                    <button onClick={() => handleClick('cart')} ><FontAwesomeIcon icon={faShoppingCart} /></button>
-                    <button onClick={() => handleClick('userPanel')}><FontAwesomeIcon icon={faUser} /></button>
-                </div>
-                <div className="search">
-                    <input type="text"/>
-                    <button><FontAwesomeIcon icon={faSearch} /></button>
-                </div>
-            </nav>
-            {isLoaded ? (<div className="results">
-                <>
-                    {booksOffers}
-                </>
-            </div>) : null} 
-        </div>
+        <Route render={() => ((actualUser.email !== "" && actualUser.password !== "") ? (
+            <div className="main">
+                <nav>
+                    <div className="logo">
+                        <span>Bookstore App</span>
+                    </div>
+                    <div className="buttons">
+                        <button onClick={() => handleClick('cart')} ><FontAwesomeIcon icon={faShoppingCart} /></button>
+                        <button onClick={() => handleClick('userPanel')}><FontAwesomeIcon icon={faUser} /></button>
+                    </div>
+                    <div className="search">
+                        <input onChange={handleChange} value={input} type="text" placeholder="search for books..."/>
+                        <button onClick={handleSearch}><FontAwesomeIcon icon={faSearch} /></button>
+                    </div>
+                </nav>
+                {isLoaded ? (<div className="results">
+                    <>
+                        {booksOffers}
+                    </>
+                </div>) : null} 
+            </div>
+        ) : (<Redirect to="/" />))}/>
     )
 }
 
