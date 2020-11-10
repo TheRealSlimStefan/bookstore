@@ -60,7 +60,7 @@ class App extends Component {
     const { users, actualUser } = this.state;
 
     return (
-      <Router>
+      <Router  basename={'/'}>
           <Switch>
               <Route path="/" exact component={() => <Logging setActualUser={this.setActualUser}/>}/>
               <Route path="/register" component={() => <Register addUsers={this.addUsers} users={users} setActualUser={this.setActualUser}/>}/>   
