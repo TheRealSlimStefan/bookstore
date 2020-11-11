@@ -6,6 +6,9 @@ An app which gives for user possibility to create an account and log in, after i
 
 ## 2. How to install?
 
+To install this aplication on your computer you have to:
 
-
-
+1. Open a terminal and move to directory where you want install this project
+2. git clone https://github.com/TheRealSlimStefan/bookstore.git .
+3. npm install
+4. npm start
